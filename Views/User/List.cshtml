@@ -1,0 +1,40 @@
+﻿@model IEnumerable<MiniSocialNetwork.Models.User>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Add">Add New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Login)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AccountCreationTime)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Login)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AccountCreationTime)
+            </td>
+            <td>
+                @Html.ActionLink("Add", "Add", "User", new {  }) |
+                @Html.ActionLink("Delete", "Delete", "User", new { login=item.Login })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
