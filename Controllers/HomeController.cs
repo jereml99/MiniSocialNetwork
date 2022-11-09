@@ -9,9 +9,7 @@ namespace MiniSocialNetwork.Controllers
         // GET: HomeController
         public ActionResult Index()
         {
-            var model = new HomeViewModel();
-
-            return View(model);
+            return View();
         }
 
         // GET: HomeController/Details/5

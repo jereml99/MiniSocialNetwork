@@ -6,31 +6,44 @@ namespace MiniSocialNetwork.Controllers
 {
     public class FriendController : Controller
     {
-        private static User CurrentlyLoggedUser = UserController.CurrentlyLoggedUser;
-        private static List<string> friends = CurrentlyLoggedUser.Friends;
+        public ActionResult Add()
+        {
+            if (!hasAccess()) return RedirectToAction("Login", "Login");
+
+            return View();
+        }
+
         [HttpPost]
         public ActionResult Add(string login)
         {
+            if (!hasAccess()) return RedirectToAction("Login", "Login");
 
             if (ModelState.IsValid)
             {
-                CurrentlyLoggedUser.Friends.Add(login);
+                Globals.CurrentlyLoggedUser?.Friends.Add(login);
 
-                return RedirectToAction("List", "Friend");
+                ViewBag.Success = true;
             }
             else
             {
-                return View(login);
+                ViewBag.Success = false;
             }
+
+            return View("FriendManageResult");
         }
 
         public ActionResult List()
         {
-            return View(CurrentlyLoggedUser.Friends);
+            if (!hasAccess()) return RedirectToAction("Login", "Login");
+
+            //return Json(new { Globals.CurrentlyLoggedUser?.Friends });
+            return View(Globals.CurrentlyLoggedUser);
         }
 
         public ActionResult Delete(string login)
         {
+            if (!hasAccess()) return RedirectToAction("Login", "Login");
+
             if (login == null)
             {
                 return RedirectToAction("List", "Friend");
@@ -43,16 +56,34 @@ namespace MiniSocialNetwork.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(string login, IFormCollection collection)
-        {
+        {// return Json(new { success = true });
+            if (!hasAccess()) return RedirectToAction("Login", "Login");
+
             try
             {
-                CurrentlyLoggedUser.Friends.RemoveAll(u => u == login);
-                return RedirectToAction("List", "User");
+                Globals.CurrentlyLoggedUser?.Friends.RemoveAll(u => u == login);
+                ViewBag.Success = true;
             }
             catch
             {
-                return View();
+                ViewBag.Success = false;
             }
+
+            return View("FriendManageResult");
         }
+
+        public ActionResult Export()
+        {
+            if (!hasAccess()) return RedirectToAction("Login", "Login");
+            var friends = Globals.CurrentlyLoggedUser?.Friends;
+            if (friends is null || friends.Count == 0){
+
+            }
+
+            //System.IO.File.WriteAllLines("SavedLists.txt", );
+            return View(Globals.CurrentlyLoggedUser);
+        }
+
+        private bool hasAccess() => Globals.CurrentlyLoggedUser != null;
     }
 }

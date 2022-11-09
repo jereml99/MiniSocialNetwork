@@ -1,0 +1,35 @@
+﻿@model MiniSocialNetwork.Models.User
+@{
+    ViewData["Title"] = "List";
+}
+
+<h1>Hi @Model.Login</h1>
+<h4>Your friends</h4>
+<p>
+    <a asp-action="Add">Add New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Friend name
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Friends)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item)
+        </td>
+        <td>
+            @Html.ActionLink("Add", "Add", "Friend", new {  }) |
+            @Html.ActionLink("Delete", "Delete", "Friend", new { login=item })
+        </td>
+    </tr>
+}
+    </tbody>
+</table>
+

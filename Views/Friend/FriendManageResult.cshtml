@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewData["Title"] = "FriendManageResult";
+}
+
+@{
+    var success = ViewBag.Success;
+}
+
+<h1>FriendManageResult</h1>
+
+@if (success){
+    <div>Succeded :)</div>
+}
+@if (!success)
+{
+    <div>Failed :( </div>
+}
+

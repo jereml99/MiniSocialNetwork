@@ -8,59 +8,35 @@ namespace MiniSocialNetwork.Controllers
 {
     public class UserController : Controller
     {
-        private readonly ILogger<UserController> _logger;
-        private static int _id = default(int);
-        public static List<User> Users = new List<User>()
-        {
-            new User("admin", DateTime.Now, new List<string>() { "ziom1", "ziom2" }),
-            new User("greg", DateTime.Now, new List<string>() { "ziom1", "ziom2" })
-        };
-
-        public static User? CurrentlyLoggedUser = null;
-
-        public UserController(ILogger<UserController> logger)
-        {
-            _logger = logger;
-        }
-
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
-        public ActionResult Add()
-        {
-            return View();
-        }
+        private static int _id = default;
 
         public ActionResult Init()
         {
+            if (!hasAccess()) return RedirectToAction("Login", "Login");
+
             for (int i = 0; i < 5; i++)
             {
-                Users.Add(new User($"user_{_id++}", DateTime.Now, new List<string>() { $"friend_{1}", $"friend_{2}" }));
+                Globals.Users.Add(new User($"user_{_id++}", DateTime.Now, new List<string>() { $"friend_{1}", $"friend_{2}" }));
             }
 
             return RedirectToAction("List", "User");
         }
 
+        public ActionResult Add()
+        {
+            if (!hasAccess()) return RedirectToAction("Login", "Login");
+
+            return View();
+        }
+
         [HttpPost]
         public ActionResult Add(string login)
         {
+            if (!hasAccess()) return RedirectToAction("Login", "Login");
 
             if (ModelState.IsValid)
             {
-                Users.Add(new User(login, DateTime.Now, new List<string>()));
+                Globals.Users.Add(new User(login, DateTime.Now, new List<string>()));
 
                 return RedirectToAction("List", "User");
             }
@@ -72,11 +48,15 @@ namespace MiniSocialNetwork.Controllers
 
         public ActionResult List()
         {
-            return View(Users);
+            if (!hasAccess()) return RedirectToAction("Login", "Login");
+
+            return View(Globals.Users);
         }
 
         public ActionResult Delete(string login)
         {
+            if (!hasAccess()) return RedirectToAction("Login", "Login");
+
             if (login == null)
             {
                 return RedirectToAction("List", "User");
@@ -90,9 +70,11 @@ namespace MiniSocialNetwork.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(string login, IFormCollection collection)
         {
+            if (!hasAccess()) return RedirectToAction("Login", "Login");
+
             try
             {
-                Users.RemoveAll(u => u.Login == login);
+                Globals.Users.RemoveAll(u => u.Login == login);
                 return RedirectToAction("List", "User");
             }
             catch
@@ -100,5 +82,7 @@ namespace MiniSocialNetwork.Controllers
                 return View();
             }
         }
+
+        private bool hasAccess() => Globals.CurrentlyLoggedUser != null && Globals.CurrentlyLoggedUser.Login == "a";
     }
 }

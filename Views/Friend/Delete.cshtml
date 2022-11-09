@@ -1,6 +1,4 @@
-﻿@model MiniSocialNetwork.Models.User
-
-@{
+﻿@{
     ViewData["Title"] = "Delete";
 }
 
@@ -9,10 +7,10 @@
 @{
     var login = ViewBag.Login;
 }
-<h3>Are you sure you want to delete user with login "@login" ?</h3>
+<h3>Are you sure you want to delete friend with login "@login" ?</h3>
 
 <div>
-    <form asp-controller="User" asp-action="Delete" asp-route-login="@login">
+    <form asp-controller="Friend" asp-action="Delete" asp-route-login="@login">
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="List">Back to List</a>
     </form>
