@@ -9,6 +9,14 @@ namespace MiniSocialNetwork.Controllers
     public class UserController : Controller
     {
         private readonly ILogger<UserController> _logger;
+        private static int _id = default(int);
+        public static List<User> Users = new List<User>()
+        {
+            new User("admin", DateTime.Now, new List<string>() { "ziom1", "ziom2" }),
+            new User("greg", DateTime.Now, new List<string>() { "ziom1", "ziom2" })
+        };
+
+        public static User? CurrentlyLoggedUser = null;
 
         public UserController(ILogger<UserController> logger)
         {
@@ -31,12 +39,19 @@ namespace MiniSocialNetwork.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-
-        static List<User> Users = new List<User>();
-
         public ActionResult Add()
         {
             return View();
+        }
+
+        public ActionResult Init()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                Users.Add(new User($"user_{_id++}", DateTime.Now, new List<string>() { $"friend_{1}", $"friend_{2}" }));
+            }
+
+            return RedirectToAction("List", "User");
         }
 
         [HttpPost]
@@ -57,12 +72,16 @@ namespace MiniSocialNetwork.Controllers
 
         public ActionResult List()
         {
-            //return Ok(User);
             return View(Users);
         }
 
         public ActionResult Delete(string login)
         {
+            if (login == null)
+            {
+                return RedirectToAction("List", "User");
+            }
+            ViewBag.Login = login;
             return View();
         }
 

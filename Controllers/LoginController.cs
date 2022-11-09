@@ -4,29 +4,23 @@ using MiniSocialNetwork.Models;
 
 namespace MiniSocialNetwork.Controllers
 {
-    public class HomeController : Controller
+    public class LoginController : Controller
     {
-        // GET: HomeController
+        static List<User> Users = UserController.Users;
+
+        // GET: LoginController
         public ActionResult Index()
-        {
-            var model = new HomeViewModel();
-
-            return View(model);
-        }
-
-        // GET: HomeController/Details/5
-        public ActionResult Details(int id)
         {
             return View();
         }
 
-        // GET: HomeController/Create
+        // GET: LoginController/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: HomeController/Create
+        // POST: LoginController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
@@ -41,13 +35,20 @@ namespace MiniSocialNetwork.Controllers
             }
         }
 
-        // GET: HomeController/Edit/5
-        public ActionResult Edit(int id)
+        // GET: LoginController/Edit/5
+        public ActionResult Login(string login)
         {
+            var currentlyLoggedUser = Users.FirstOrDefault(x => x.Login == login);
+
+            if (currentlyLoggedUser == null)
+            {
+                return View();
+            }
+
             return View();
         }
 
-        // POST: HomeController/Edit/5
+        // POST: LoginController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
@@ -62,13 +63,13 @@ namespace MiniSocialNetwork.Controllers
             }
         }
 
-        // GET: HomeController/Delete/5
+        // GET: LoginController/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: HomeController/Delete/5
+        // POST: LoginController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
