@@ -5,9 +5,24 @@
 
 <h1>Hi @Model.Login</h1>
 <h4>Your friends</h4>
-<p>
-    <a asp-action="Add">Add New</a>
-</p>
+<table style="text-align:center">
+    <tr>
+        <td>
+            <form asp-controller="Friend" asp-action="Import" method="post" enctype="multipart/form-data" style="float:left;">
+                <label for="postedFile"></label>
+                <input type="file" id="myFile" name="postedFile" />
+                <input type="submit" value="Import" />
+            </form>
+        </td>
+        <td>
+            <form asp-controller="Friend" asp-action="Export" method="post" style="float:right;">
+                <input type="submit" value="Export" />
+            </form>
+        </td>
+    </tr>
+</table>
+
+
 <table class="table">
     <thead>
         <tr>
@@ -25,8 +40,14 @@
             @Html.DisplayFor(modelItem => item)
         </td>
         <td>
-            @Html.ActionLink("Add", "Add", "Friend", new {  }) |
-            @Html.ActionLink("Delete", "Delete", "Friend", new { login=item })
+            <form asp-controller="Friend" asp-action="Add">
+                <label for="login">Name</label>
+                <input name="login"/>
+                <input type="submit" value="Add"/>
+            </form>
+            <form asp-controller="Friend" asp-action="Delete" asp-route-login="@item">
+                <input type="submit" value="Delete"/>
+            </form>
         </td>
     </tr>
 }
