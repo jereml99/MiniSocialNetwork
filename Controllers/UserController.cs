@@ -70,8 +70,6 @@ namespace MiniSocialNetwork.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(string login, IFormCollection collection)
         {
-            if (!hasAccess()) return RedirectToAction("Login", "Login");
-
             try
             {
                 Globals.Users.RemoveAll(u => u.Login == login);
