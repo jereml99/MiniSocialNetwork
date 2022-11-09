@@ -116,7 +116,7 @@ namespace MiniSocialNetwork.Controllers
         }
 
         private List<string> RetriveFriendsFromFile(IFormFile file)
-        {
+        {// if null
             var result = new List<string>();
             using (var reader = new StreamReader(file.OpenReadStream()))
             {
