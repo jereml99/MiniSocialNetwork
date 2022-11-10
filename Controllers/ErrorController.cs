@@ -8,10 +8,5 @@ namespace MiniSocialNetwork.Controllers
         {
             return View("Error");
         }
-        public ViewResult NotFound()
-        {
-            Response.StatusCode = 404;
-            return View("NotFound");
-        }
     }
 }

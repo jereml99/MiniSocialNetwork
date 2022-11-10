@@ -23,18 +23,11 @@ namespace MiniSocialNetwork.Controllers
         {
             if (!hasAccess()) return RedirectToAction("Login", "Login");
 
-            if (ModelState.IsValid)
-            {
-                Globals.CurrentlyLoggedUser?.Friends.Add(login);
+            if (!ModelState.IsValid || !Globals.Users.Select(user => user.Login).Contains(login) ||
+                (Globals.CurrentlyLoggedUser?.Friends.Contains(login) ?? true)) return Json(false);
+            Globals.CurrentlyLoggedUser?.Friends.Add(login);
+            return Json(true);
 
-                ViewBag.Success = true;
-            }
-            else
-            {
-                ViewBag.Success = false;
-            }
-
-            return View("FriendManageResult");
         }
 
         public ActionResult List()
@@ -44,19 +37,7 @@ namespace MiniSocialNetwork.Controllers
             //return Json(new { Globals.CurrentlyLoggedUser?.Friends });
             return View(Globals.CurrentlyLoggedUser);
         }
-
-        public ActionResult Delete(string login)
-        {
-            if (!hasAccess()) return RedirectToAction("Login", "Login");
-
-            if (login == null)
-            {
-                return RedirectToAction("List", "Friend");
-            }
-
-            ViewBag.Login = login;
-            return View();
-        }
+        
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -67,14 +48,13 @@ namespace MiniSocialNetwork.Controllers
             try
             {
                 Globals.CurrentlyLoggedUser?.Friends.RemoveAll(u => u == login);
-                ViewBag.Success = true;
+                return Json(true);
             }
             catch
             {
-                ViewBag.Success = false;
+                return Json(false);
             }
-
-            return View("FriendManageResult");
+            
         }
 
         public ActionResult Export()

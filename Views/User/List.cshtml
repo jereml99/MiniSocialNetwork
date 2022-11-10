@@ -4,11 +4,13 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Admin panel</h1>
 
 <p>
-    <a asp-action="Add">Add New</a>
+    <a asp-action="Add">Add</a>
+ 
 </p>
+   <a asp-action="Init">init</a>
 <table class="table">
     <thead>
         <tr>
@@ -16,7 +18,10 @@
                 @Html.DisplayNameFor(model => model.Login)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AccountCreationTime)
+                @Html.DisplayNameFor(model => model.CreationTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor( model => model.Friends)
             </th>
             <th></th>
         </tr>
@@ -28,11 +33,16 @@
                 @Html.DisplayFor(modelItem => item.Login)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.AccountCreationTime)
+                @Html.DisplayFor(modelItem => item.CreationTime)
             </td>
             <td>
-                @Html.ActionLink("Add", "Add", "User", new {  }) |
-                @Html.ActionLink("Delete", "Delete", "User", new { login=item.Login })
+                @item.Friends.Aggregate("", (current, friend) => current + ","  + friend)
+            </td>
+            
+            <td>
+                <form asp-controller="User" asp-action="Delete" asp-route-login="@item.Login">
+                    <input type="submit" value="Delete" class="btn btn-danger" /> 
+                </form>
             </td>
         </tr>
 }

@@ -16,7 +16,8 @@ namespace MiniSocialNetwork.Controllers
 
             for (int i = 0; i < 5; i++)
             {
-                Globals.Users.Add(new User($"user_{_id++}", DateTime.Now, new List<string>() { $"friend_{1}", $"friend_{2}" }));
+                var friends = Globals.Users.TakeLast(2).Select(user => user.Login).ToList();
+                Globals.Users.Add(new User($"user{_id++}", DateTime.Now, friends));
             }
 
             return RedirectToAction("List", "User");
@@ -53,18 +54,6 @@ namespace MiniSocialNetwork.Controllers
             return View(Globals.Users);
         }
 
-        public ActionResult Delete(string login)
-        {
-            if (!hasAccess()) return RedirectToAction("Login", "Login");
-
-            if (login == null)
-            {
-                return RedirectToAction("List", "User");
-            }
-            ViewBag.Login = login;
-            return View();
-        }
-
         // POST: HomeController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -73,6 +62,10 @@ namespace MiniSocialNetwork.Controllers
             try
             {
                 Globals.Users.RemoveAll(u => u.Login == login);
+                foreach (var user in Globals.Users)
+                {
+                    user.Friends.RemoveAll(f => f == login);
+                }
                 return RedirectToAction("List", "User");
             }
             catch
@@ -81,6 +74,6 @@ namespace MiniSocialNetwork.Controllers
             }
         }
 
-        private bool hasAccess() => Globals.CurrentlyLoggedUser != null && Globals.CurrentlyLoggedUser.Login == "a";
+        private bool hasAccess() => Globals.CurrentlyLoggedUser != null && Globals.CurrentlyLoggedUser.Login == Globals.AdminLogin;
     }
 }

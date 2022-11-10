@@ -20,6 +20,16 @@
             </form>
         </td>
     </tr>
+    <tr>
+        <td>
+            <form asp-controller="Friend" asp-action="Add">
+                <label for="login">Name</label>
+                <input name="login"/>
+                <input type="submit" value="Add"/>
+            </form>
+        </td>
+
+    </tr>
 </table>
 
 
@@ -39,16 +49,12 @@
         <td>
             @Html.DisplayFor(modelItem => item)
         </td>
-        <td>
-            <form asp-controller="Friend" asp-action="Add">
-                <label for="login">Name</label>
-                <input name="login"/>
-                <input type="submit" value="Add"/>
-            </form>
-            <form asp-controller="Friend" asp-action="Delete" asp-route-login="@item">
-                <input type="submit" value="Delete"/>
-            </form>
-        </td>
+                    <td>
+            
+                        <form asp-controller="Friend" asp-action="Delete" asp-route-login="@item">
+                            <input type="submit" value="Delete" class="btn btn-danger"/>
+                        </form>
+                    </td>
     </tr>
 }
     </tbody>
