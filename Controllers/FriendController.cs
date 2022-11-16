@@ -67,7 +67,7 @@ namespace MiniSocialNetwork.Controllers
                 return View("List", Globals.CurrentlyLoggedUser);
             }
 
-            string filePath = $"friends_of_{Globals.CurrentlyLoggedUser!.Login}_" + DateTime.Today.ToString("yyyy-MM-dd") + ".txt";
+            string filePath = $"{Globals.CurrentlyLoggedUser!.Login}_" + DateTime.Today.ToString("yyyy-MM-dd") + ".txt";
 
             StringBuilder sb = new();
             Globals.CurrentlyLoggedUser!.Friends.ForEach(f => sb.AppendLine(f));

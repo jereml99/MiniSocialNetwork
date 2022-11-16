@@ -8,6 +8,16 @@
 <table style="text-align:center">
     <tr>
         <td>
+            <form asp-controller="Friend" asp-action="Add">
+                <label for="login">Name</label>
+                <input name="login"/>
+                <input type="submit" value="Add"/>
+            </form>
+        </td>
+
+    </tr>
+    <tr>
+        <td>
             <form asp-controller="Friend" asp-action="Import" method="post" enctype="multipart/form-data" style="float:left;">
                 <label for="postedFile"></label>
                 <input type="file" id="myFile" name="postedFile" />
@@ -19,16 +29,6 @@
                 <input type="submit" value="Export" />
             </form>
         </td>
-    </tr>
-    <tr>
-        <td>
-            <form asp-controller="Friend" asp-action="Add">
-                <label for="login">Name</label>
-                <input name="login"/>
-                <input type="submit" value="Add"/>
-            </form>
-        </td>
-
     </tr>
 </table>
 
