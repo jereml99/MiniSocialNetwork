@@ -89,6 +89,7 @@ namespace MiniSocialNetwork.Controllers
         [HttpPost]
         public ActionResult Import(IFormFile postedFile)
         {
+            if(postedFile is null) return Json(false);
             Globals.CurrentlyLoggedUser?.Friends.Clear();
             Globals.CurrentlyLoggedUser?.Friends.AddRange(RetriveFriendsFromFile(postedFile));
 

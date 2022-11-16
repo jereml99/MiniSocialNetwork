@@ -3,8 +3,7 @@
     ViewData["Title"] = "List";
 }
 
-<h1>Hi @Model.Login</h1>
-<h4>Your friends</h4>
+<h1>Hello @Model.Login!</h1>
 <table style="text-align:center">
     <tr>
         <td>
@@ -14,49 +13,54 @@
                 <input type="submit" value="Add"/>
             </form>
         </td>
+        <td style="width: 30%"></td>
+                <td>
+                    <form asp-controller="Friend" asp-action="Import" method="post" enctype="multipart/form-data" style="float:left;">
+                        <label for="postedFile"></label>
+                        <input type="file" id="myFile" name="postedFile" />
+                        <input type="submit" value="Import" />
+                    </form>
+                </td>
+                <td>
+                    <form asp-controller="Friend" asp-action="Export" method="post" style="float:right;">
+                        <input type="submit" value="Export" />
+                    </form>
+                </td>
 
-    </tr>
-    <tr>
-        <td>
-            <form asp-controller="Friend" asp-action="Import" method="post" enctype="multipart/form-data" style="float:left;">
-                <label for="postedFile"></label>
-                <input type="file" id="myFile" name="postedFile" />
-                <input type="submit" value="Import" />
-            </form>
-        </td>
-        <td>
-            <form asp-controller="Friend" asp-action="Export" method="post" style="float:right;">
-                <input type="submit" value="Export" />
-            </form>
-        </td>
     </tr>
 </table>
-
-
-<table class="table">
-    <thead>
+@if(Model.Friends.Count == 0)
+{
+    <p>You have no friends ;c.</p>
+}
+else
+{
+    <h4>Your friends</h4>
+    <table class="table">
+        <thead>
         <tr>
             <th>
                 Friend name
             </th>
             <th></th>
         </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Friends)
-{
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item)
-        </td>
-                    <td>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Friends)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item)
+                </td>
+                <td>
             
-                        <form asp-controller="Friend" asp-action="Delete" asp-route-login="@item">
-                            <input type="submit" value="Delete" class="btn btn-danger"/>
-                        </form>
-                    </td>
-    </tr>
+                    <form asp-controller="Friend" asp-action="Delete" asp-route-login="@item">
+                        <input type="submit" value="Delete" class="btn btn-danger"/>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
 }
-    </tbody>
-</table>
 
