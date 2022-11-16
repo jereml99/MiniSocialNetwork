@@ -6,6 +6,12 @@
 <h1>Hello @Model.Login!</h1>
 <table style="text-align:center">
     <tr>
+        <th>Add user</th>
+        <th></th>
+        <th>Import</th>
+        <th>export</th>
+    </tr>
+    <tr>
         <td>
             <form asp-controller="Friend" asp-action="Add">
                 <label for="login">Name</label>
@@ -14,18 +20,18 @@
             </form>
         </td>
         <td style="width: 30%"></td>
-                <td>
-                    <form asp-controller="Friend" asp-action="Import" method="post" enctype="multipart/form-data" style="float:left;">
-                        <label for="postedFile"></label>
-                        <input type="file" id="myFile" name="postedFile" />
-                        <input type="submit" value="Import" />
-                    </form>
-                </td>
-                <td>
-                    <form asp-controller="Friend" asp-action="Export" method="post" style="float:right;">
-                        <input type="submit" value="Export" />
-                    </form>
-                </td>
+        <td>
+            <form asp-controller="Friend" asp-action="Import" method="post" enctype="multipart/form-data" style="float:left;">
+                <label for="postedFile"></label>
+                <input type="file" id="myFile" name="postedFile"/>
+                <input type="submit" value="Import"/>
+            </form>
+        </td>
+        <td>
+            <form asp-controller="Friend" asp-action="Export" method="post" style="float:right;">
+                <input type="submit" value="Export"/>
+            </form>
+        </td>
 
     </tr>
 </table>
